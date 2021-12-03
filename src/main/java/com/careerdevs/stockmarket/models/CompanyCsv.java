@@ -1,6 +1,7 @@
 package com.careerdevs.stockmarket.models;
 
 public class CompanyCsv {
+
     private String symbol;
     private String name;
     private String exchange;
