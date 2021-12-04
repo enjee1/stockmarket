@@ -1,5 +1,7 @@
 package com.careerdevs.stockmarket.models;
 
+import java.util.Comparator;
+
 public class CompanyCsv {
 
     private String symbol;
@@ -55,5 +57,11 @@ public class CompanyCsv {
     @Override
     public String toString() {
         return "{" + name + "::" + symbol + "::" + ipoDate + "::" + status + "}";
+    }
+
+    public static class SortBySymbol implements Comparator<CompanyCsv> {
+        public int compare(CompanyCsv a, CompanyCsv b) {
+            return a.getSymbol().compareTo(b.getSymbol());
+        }
     }
 }
