@@ -1,7 +1,10 @@
 package com.careerdevs.stockmarket.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Comparator;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyCsv {
 
     private String symbol;
@@ -11,6 +14,14 @@ public class CompanyCsv {
     private String ipoDate;
     private String delistingDate;
     private String status;
+
+    public CompanyCsv() {}
+
+    public CompanyCsv(String symbol, String name, String exchange) {
+        this.symbol = symbol;
+        this.name = name;
+        this.exchange = exchange;
+    }
 
     public String getSymbol() {
         return symbol;
@@ -61,7 +72,14 @@ public class CompanyCsv {
 
     public static class SortBySymbol implements Comparator<CompanyCsv> {
         public int compare(CompanyCsv a, CompanyCsv b) {
-            return a.getSymbol().compareTo(b.getSymbol());
+            int result = 0;
+            try {
+                result = a.getSymbol().compareTo(b.getSymbol());
+            }
+            catch (NullPointerException npe) {
+                result = 0;
+            }
+            return result;
         }
     }
 }
