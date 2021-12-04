@@ -21,22 +21,24 @@ public class CompanyController {
 
     @Autowired
     private Environment env;
+
     private final static String AV_URL = "https://www.alphavantage.co/query";
+    private final static List<CompanyCsv> ALL_CSV_DATA = StockCsvParser.readCSV();
 
     @GetMapping("/allcsvdata")
+    // Uses local .csv file
     public List<CompanyCsv> getAllCsvData(RestTemplate restTemplate) {
-        List<CompanyCsv> allCsvData = StockCsvParser.readCSV();
 
-        return allCsvData;
+        return ALL_CSV_DATA;
 
     }
     @GetMapping("/feature1")
-    // all companies name, symbol, and exchange (in alphabetical order by symbol)
+    // Uses local .csv file
+    // GET all companies name, symbol, and exchange (in alphabetical order by symbol)
     public List<CompanyCsv> getNameSymExchData(RestTemplate restTemplate) {
-        List<CompanyCsv> allCsvData = StockCsvParser.readCSV();
         List<CompanyCsv> filteredCsvData = new ArrayList<>();
 
-        for (CompanyCsv c : allCsvData) {
+        for (CompanyCsv c : ALL_CSV_DATA) {
             CompanyCsv company = new CompanyCsv(c.getSymbol(), c.getName(), c.getExchange());
             filteredCsvData.add(company);
         }
@@ -46,12 +48,56 @@ public class CompanyController {
         return filteredCsvData;
     }
 
+    @GetMapping("/feature2")
+    // Uses local .csv file
+    // GET all companies name and IPO date (in ascending order by date)
+    public List<CompanyCsv> getNameIpoData(RestTemplate restTemplate) {
+        List<CompanyCsv> filteredCsvData = new ArrayList<>();
 
-    /*
-    GET all companies overview information. Must include data from the following keys
-        Symbol, AssetType, Name, Description, Address
-     */
+        for (CompanyCsv c : ALL_CSV_DATA) {
+            CompanyCsv company = new CompanyCsv(c.getName(), c.getIpoDate());
+            filteredCsvData.add(company);
+        }
+
+        Collections.sort(filteredCsvData, new CompanyCsv.SortByIpoDate());
+
+        return filteredCsvData;
+    }
+
+    @GetMapping("/feature3")
+    // Uses local .csv file
+    // GET all companies traded on the NASDAQ exchange
+    public List<CompanyCsv> getNasdaqCompanies(RestTemplate restTemplate) {
+        List<CompanyCsv> filteredCsvData = new ArrayList<>();
+
+        for (CompanyCsv c : ALL_CSV_DATA) {
+            if (c.getExchange().equals("NASDAQ")){
+                filteredCsvData.add(c);
+            }
+        }
+        return filteredCsvData;
+    }
+
+    @GetMapping("/feature4")
+    // Uses local .csv file
+    // GET all companies traded on the NYSE
+    public List<CompanyCsv> getNyseCompanies(RestTemplate restTemplate) {
+        List<CompanyCsv> filteredCsvData = new ArrayList<>();
+
+        for (CompanyCsv c : ALL_CSV_DATA) {
+            if (c.getExchange().equals("NYSE")){
+                filteredCsvData.add(c);
+            }
+        }
+        return filteredCsvData;
+    }
+
     @GetMapping("/feature5")
+    // Uses external API call
+    /*
+        GET all companies overview information. Include data from the following keys:
+            Symbol, AssetType, Name, Description, Address
+     */
     public List<CompanyAv> getAvOverview(RestTemplate restTemplate) {
 
         String ovUrl = AV_URL + "?function=OVERVIEW&symbol=";

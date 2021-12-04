@@ -2,7 +2,10 @@ package com.careerdevs.stockmarket.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyCsv {
@@ -16,6 +19,11 @@ public class CompanyCsv {
     private String status;
 
     public CompanyCsv() {}
+
+    public CompanyCsv(String name, String ipoDate) {
+        this.name = name;
+        this.ipoDate = ipoDate;
+    }
 
     public CompanyCsv(String symbol, String name, String exchange) {
         this.symbol = symbol;
@@ -77,6 +85,25 @@ public class CompanyCsv {
                 result = a.getSymbol().compareTo(b.getSymbol());
             }
             catch (NullPointerException npe) {
+                result = 0;
+            }
+            return result;
+        }
+    }
+
+    public static class SortByIpoDate implements Comparator<CompanyCsv> {
+        public int compare(CompanyCsv a, CompanyCsv b) {
+            int result = 0;
+            String dateString1 = a.getIpoDate();
+            String dateString2 = b.getIpoDate();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                Date date1 = format.parse(dateString1);
+                Date date2 = format.parse(dateString2);
+                result = date1.compareTo(date2);
+            }
+            catch (NullPointerException | ParseException npe) {
                 result = 0;
             }
             return result;
