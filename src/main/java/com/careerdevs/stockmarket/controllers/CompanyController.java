@@ -2,14 +2,12 @@ package com.careerdevs.stockmarket.controllers;
 
 import com.careerdevs.stockmarket.models.CompanyAv;
 import com.careerdevs.stockmarket.models.CompanyCsv;
-import com.careerdevs.stockmarket.parsers.StockCsvParser;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.careerdevs.stockmarket.utilties.StockComparator;
+import com.careerdevs.stockmarket.utilties.StockCsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,7 +41,7 @@ public class CompanyController {
             filteredCsvData.add(company);
         }
 
-        Collections.sort(filteredCsvData, new CompanyCsv.SortBySymbol());
+        Collections.sort(filteredCsvData, new StockComparator.SortCompCsvBySymbol());
 
         return filteredCsvData;
     }
@@ -59,7 +57,7 @@ public class CompanyController {
             filteredCsvData.add(company);
         }
 
-        Collections.sort(filteredCsvData, new CompanyCsv.SortByIpoDate());
+        Collections.sort(filteredCsvData, new StockComparator.SortCompCsvByIpoDate());
 
         return filteredCsvData;
     }
@@ -101,10 +99,9 @@ public class CompanyController {
     public List<CompanyAv> getAvOverview(RestTemplate restTemplate) {
 
         String ovUrl = AV_URL + "?function=OVERVIEW&symbol=";
-        List<CompanyCsv> csvData = StockCsvParser.readCSV();
         List<CompanyAv> allCompData = new ArrayList<>();
 
-        for (CompanyCsv comp : csvData) {
+        for (CompanyCsv comp : ALL_CSV_DATA) {
               String tempUrl = ovUrl + comp.getSymbol() + "&apikey=" + env.getProperty("av.key");
               CompanyAv compApiData = restTemplate.getForObject(tempUrl, CompanyAv.class);
               CompanyAv company = new CompanyAv
@@ -112,7 +109,30 @@ public class CompanyController {
               allCompData.add(company);
         }
 
-        Collections.sort(allCompData, new CompanyAv.SortBySymbol());
+        Collections.sort(allCompData, new StockComparator.SortCompAvBySymbol());
+        return allCompData;
+    }
+
+    @GetMapping("/feature6")
+    // Uses external API call
+    /*
+        GET all companies name, symbol, and market capitalization (sorted by market cap in descending order)
+     */
+    public List<CompanyAv> getMarketCap(RestTemplate restTemplate) {
+        String ovUrl = AV_URL + "?function=OVERVIEW&symbol=";
+
+        List<CompanyAv> allCompData = new ArrayList<>();
+
+        for (CompanyCsv comp : ALL_CSV_DATA) {
+            String tempUrl = ovUrl + comp.getSymbol() + "&apikey=" + env.getProperty("av.key");
+            CompanyAv compApiData = restTemplate.getForObject(tempUrl, CompanyAv.class);
+            CompanyAv company = new CompanyAv
+                    (compApiData.getName(), compApiData.getSymbol(), compApiData.getMarketCap() );
+            allCompData.add(company);
+        }
+
+        Collections.sort(allCompData, new StockComparator.SortCompAvByMarketCap());
+        Collections.reverse(allCompData);
         return allCompData;
     }
 

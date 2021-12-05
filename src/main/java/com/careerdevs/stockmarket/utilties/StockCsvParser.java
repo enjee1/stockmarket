@@ -1,4 +1,4 @@
-package com.careerdevs.stockmarket.parsers;
+package com.careerdevs.stockmarket.utilties;
 
 import com.careerdevs.stockmarket.models.CompanyCsv;
 import com.opencsv.CSVReader;
@@ -16,7 +16,7 @@ public class StockCsvParser {
 
     public static List<CompanyCsv> readCSV() {
         try {
-            CSVReader reader = new CSVReader(new FileReader("src/data_set_2.csv"), ',');
+            CSVReader reader = new CSVReader(new FileReader("src/data_set_1.csv"), ',');
 
             List<CompanyCsv> allCompanies = new ArrayList<CompanyCsv>();
 
