@@ -101,13 +101,20 @@ public class CompanyAv {
 
     public static class SortBySymbol implements Comparator<CompanyAv> {
         public int compare(CompanyAv a, CompanyAv b) {
-            int result = 0;
-            try {
-                result = a.getSymbol().compareTo(b.getSymbol());
-            }
-            catch (NullPointerException npe) {
+            int result;
+            String compASymbol = a.getSymbol();
+            String compBSymbol = b.getSymbol();
+
+            if (compASymbol == null && compBSymbol != null) {
+                result = 1;
+            } else if (compASymbol != null && compBSymbol == null) {
+                result = -1;
+            } else if (compASymbol == null){
                 result = 0;
+            } else {
+                result = compASymbol.compareTo(compBSymbol);
             }
+
             return result;
         }
     }
