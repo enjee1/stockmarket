@@ -27,6 +27,12 @@ public class CompanyAv {
         this.address = address;
     }
 
+    public CompanyAv(String name, String symbol, String marketCap) {
+        this.name = name;
+        this.symbol = symbol;
+        this.marketCap = marketCap;
+    }
+
     public String getDivDate() {
         return divDate;
     }
@@ -99,23 +105,5 @@ public class CompanyAv {
         this.address = address;
     }
 
-    public static class SortBySymbol implements Comparator<CompanyAv> {
-        public int compare(CompanyAv a, CompanyAv b) {
-            int result;
-            String compASymbol = a.getSymbol();
-            String compBSymbol = b.getSymbol();
 
-            if (compASymbol == null && compBSymbol != null) {
-                result = 1;
-            } else if (compASymbol != null && compBSymbol == null) {
-                result = -1;
-            } else if (compASymbol == null){
-                result = 0;
-            } else {
-                result = compASymbol.compareTo(compBSymbol);
-            }
-
-            return result;
-        }
-    }
 }
