@@ -80,32 +80,55 @@ public class CompanyCsv {
 
     public static class SortBySymbol implements Comparator<CompanyCsv> {
         public int compare(CompanyCsv a, CompanyCsv b) {
-            int result = 0;
-            try {
-                result = a.getSymbol().compareTo(b.getSymbol());
-            }
-            catch (NullPointerException npe) {
+            int result;
+            String compASymbol = a.getSymbol();
+            String compBSymbol = b.getSymbol();
+
+            if (compASymbol == null && compBSymbol != null) {
+                result = 1;
+            } else if (compASymbol != null && compBSymbol == null) {
+                result = -1;
+            } else if (compASymbol == null){
                 result = 0;
+            } else {
+                result = compASymbol.compareTo(compBSymbol);
             }
+
             return result;
         }
     }
 
     public static class SortByIpoDate implements Comparator<CompanyCsv> {
         public int compare(CompanyCsv a, CompanyCsv b) {
-            int result = 0;
+            int result;
             String dateString1 = a.getIpoDate();
             String dateString2 = b.getIpoDate();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
+            Date date1 = null;
             try {
-                Date date1 = format.parse(dateString1);
-                Date date2 = format.parse(dateString2);
+                date1 = format.parse(dateString1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Date date2 = null;
+            try {
+                date2 = format.parse(dateString2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (date1 == null && date2 != null) {
+                result = 1;
+            } else if (date1 != null && date2 == null) {
+                result = -1;
+            } else if (date1 == null) {
+                result = 0;
+            } else {
                 result = date1.compareTo(date2);
             }
-            catch (NullPointerException | ParseException npe) {
-                result = 0;
-            }
+
             return result;
         }
     }
