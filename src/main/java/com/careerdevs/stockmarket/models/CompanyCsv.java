@@ -18,19 +18,6 @@ public class CompanyCsv {
     private String delistingDate;
     private String status;
 
-    public CompanyCsv() {}
-
-    public CompanyCsv(String name, String ipoDate) {
-        this.name = name;
-        this.ipoDate = ipoDate;
-    }
-
-    public CompanyCsv(String symbol, String name, String exchange) {
-        this.symbol = symbol;
-        this.name = name;
-        this.exchange = exchange;
-    }
-
     public String getSymbol() {
         return symbol;
     }

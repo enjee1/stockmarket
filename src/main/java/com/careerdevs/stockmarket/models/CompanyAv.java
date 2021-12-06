@@ -16,23 +16,6 @@ public class CompanyAv {
     private String marketCap;
     private String divDate;
 
-    public CompanyAv() {
-
-    }
-    public CompanyAv(String name, String symbol, String assetType, String description, String address) {
-        this.name = name;
-        this.symbol = symbol;
-        this.assetType = assetType;
-        this.description = description;
-        this.address = address;
-    }
-
-    public CompanyAv(String name, String symbol, String marketCap) {
-        this.name = name;
-        this.symbol = symbol;
-        this.marketCap = marketCap;
-    }
-
     public String getDivDate() {
         return divDate;
     }
