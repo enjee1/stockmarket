@@ -108,4 +108,40 @@ public class StockComparator {
             return result;
         }
     }
+
+    public static class SortCompAvByDivDate implements Comparator<CompanyAv> {
+
+        public int compare(CompanyAv a, CompanyAv b) {
+            int result;
+            String dateString1 = a.getDivDate();
+            String dateString2 = b.getDivDate();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date date1 = null;
+            try {
+                date1 = format.parse(dateString1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Date date2 = null;
+            try {
+                date2 = format.parse(dateString2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (date1 == null && date2 != null) {
+                result = 1;
+            } else if (date1 != null && date2 == null) {
+                result = -1;
+            } else if (date1 == null) {
+                result = 0;
+            } else {
+                result = date1.compareTo(date2);
+            }
+
+            return result;
+        }
+    }
 }

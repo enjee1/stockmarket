@@ -137,24 +137,21 @@ public class CompanyController {
         return allCompData;
     }
 
-    //@GetMapping("/feature7")
+    @GetMapping("/feature7")
     // Uses external API call
     /*
         GET all companies name, symbol and dividend date. Order by which dividend date is the closest to the
         current date. (if the dividend date is Nov 30 and today is Dec 1,
         that would be the furthest a dividend date could be from the current date)
      */
-    /*public List<CompanyAv> getDivDate(RestTemplate restTemplate){
+    public List<CompanyAv> getDivDate(RestTemplate restTemplate){
         List<CompanyAv> allCompData = new ArrayList<>();
 
         for (CompanyCsv comp : ALL_CSV_DATA) {
             CompanyAv compApiData = restTemplate.getForObject(genUrl(comp.getSymbol()), CompanyAv.class);
-
-
-
-            allCompData.add(company);
+            allCompData.add(FeatureFactory.feature7(compApiData));
         }
 
         return allCompData;
-    }*/
+    }
 }
