@@ -1,0 +1,22 @@
+Required features (one route for each):
+
+You can name each route as you see fit. Include a route path to all these routes /api/stock
+This will require you to add the @RequestMapping (“api/stock/”) annotation to your RestController class
+
+External API Request required
+External API Request not needed
+
+GET all companies names and stock symbol and exchange (in alphabetical order by name)
+GET all companies names and IPO data (in ascending order by date)
+GET all companies traded on the NASDAQ
+GET all companies traded on the NYSE
+GET all companies overview information. Must include data from the following keys
+Symbol
+AssetType
+Name
+Description
+Address
+GET all companies name, symbol and market capitalization (highest to lowest market cap)
+GET all companies name, symbol and dividend date. Order by which dividend date is the closest to the current date. (if the dividend date is Nov 30 and today is Dec 1, that would be the furthest a dividend date could be from the current date)
+
+Note: You can try to combine 3 & 4 into the same route
