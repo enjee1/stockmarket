@@ -16,7 +16,7 @@ public class StockCsvParser {
 
     public static List<CompanyCsv> readCSV() {
         try {
-            CSVReader reader = new CSVReader(new FileReader("src/data_set_1.csv"), ',');
+            CSVReader reader = new CSVReader(new FileReader("src/data_set_2.csv"), ',');
 
             List<CompanyCsv> allCompanies = new ArrayList<CompanyCsv>();
 
